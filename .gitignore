@@ -1,1 +1,3 @@
 __pycache__/
+# RAW screenshots contain private info; keep them local only
+*_RAW.png

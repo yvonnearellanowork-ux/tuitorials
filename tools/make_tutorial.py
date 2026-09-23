@@ -18,8 +18,8 @@ BOX_W, BOX_TOP, BOX_BOTTOM = 1400, 372, 955  # area for the browser window
 TITLEBAR = 33
 
 
-def font(size, weight):
-    f = ImageFont.truetype(FONT, size * S)
+def font(size, weight, scale=S):
+    f = ImageFont.truetype(FONT, size * scale)
     f.set_variation_by_axes([weight, 100])
     return f
 
@@ -49,12 +49,9 @@ def pill(d, cy, text, f, pad_x, h, radius):
 
 
 def render(out, platform, step, total, title, hint, footer, shot, crop, target,
-           badge_side="right", blur=()):
-    src = Image.open(shot).convert("RGB")
-    for box in blur:  # hide personal info
-        region = src.crop(box).filter(ImageFilter.GaussianBlur(8))
-        src.paste(region, box[:2])
-    src = src.crop(crop)
+           badge_side="right"):
+    """shot must be the CLEAN (already redacted) screenshot."""
+    src = Image.open(shot).convert("RGB").crop(crop)
 
     canvas = Image.new("RGB", (W * S, H * S), GREEN)
     d = ImageDraw.Draw(canvas)
